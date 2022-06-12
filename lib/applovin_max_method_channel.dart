@@ -12,7 +12,9 @@ enum AppLovinAdListener {
   onAdDisplayFailed,
   onRewardedVideoStarted,
   onRewardedVideoCompleted,
-  onUserRewarded
+  onUserRewarded,
+  onNativeAdLoaded,
+  onNativeAdLoadFailed
 }
 
 typedef AppLovinListener = Function(AppLovinAdListener? listener);
@@ -28,6 +30,8 @@ final Map<String, AppLovinAdListener> appLovinAdListener =
   'onRewardedVideoStarted': AppLovinAdListener.onRewardedVideoStarted,
   'onRewardedVideoCompleted': AppLovinAdListener.onRewardedVideoCompleted,
   'onUserRewarded': AppLovinAdListener.onUserRewarded,
+  'onNativeAdLoaded': AppLovinAdListener.onNativeAdLoaded,
+  'onNativeAdLoadFailed': AppLovinAdListener.onNativeAdLoadFailed,
 };
 
 /// An implementation of [ApplovinMaxPlatform] that uses method channels.
@@ -93,7 +97,8 @@ class MethodChannelApplovinMax extends ApplovinMaxPlatform {
     await methodChannel.invokeMethod<String>('showRewards');
   }
 
-  static Future<void> handleMethod(
+  @override
+  Future<void> handleMethod(
       MethodCall call, AppLovinListener listener) async {
     listener(appLovinAdListener[call.method]);
   }

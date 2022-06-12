@@ -105,10 +105,12 @@ class _MyAppState extends State<MyApp> {
               ),
               if (_isShowBanner)
                 ApplovinMaxBannerView(
+                  appLovinListener: _listener,
                   size: BannerAdSize.banner,
                 ),
               if (_isShowNative)
                 ApplovinMaxNativeView(
+                  appLovinListener: _listener,
                   size: NativeAdType.medium,
                 ),
               Text(

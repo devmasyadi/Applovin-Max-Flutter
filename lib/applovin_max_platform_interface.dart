@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'applovin_max_method_channel.dart';
@@ -28,27 +29,32 @@ abstract class ApplovinMaxPlatform extends PlatformInterface {
   }
 
   Future<void> initSdk(AppLovinInitListener? appLovinInitListener) async {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('initSdk() has not been implemented.');
   }
 
   Future<void> setAdUnit(String? bannerId, String? interstitialId,
       String? nativeId, String? rewardsAdsId) async {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('setAdUnit() has not been implemented.');
   }
 
   Future<void> createInterstitial(AppLovinListener? appLovinListener) async {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('createInterstitial() has not been implemented.');
   }
 
   Future<void> showInterstitial() async {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('showInterstitial() has not been implemented.');
   }
 
   Future<void> createRewards(AppLovinListener? appLovinListener) async {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('createRewards() has not been implemented.');
   }
 
   Future<void> showRewards() async {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('showRewards() has not been implemented.');
+  }
+
+  Future<void> handleMethod(
+      MethodCall call, AppLovinListener listener) async {
+    throw UnimplementedError('handleMethod() has not been implemented.');
   }
 }

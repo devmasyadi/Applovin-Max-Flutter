@@ -39,7 +39,13 @@ class BannerView(
             )
         }
 
-        override fun onAdLoadFailed(adUnitId: String?, error: MaxError) {}
+        override fun onAdLoadFailed(adUnitId: String?, error: MaxError) {
+            Utils.invokeOnAdEvent(
+                methodeChannel,
+                "onAdLoadFailed",
+                hashMapOf("adUnitId" to adUnitId.toString(), "error" to error.toString())
+            )
+        }
 
         override fun onAdDisplayFailed(ad: MaxAd?, error: MaxError) {}
 

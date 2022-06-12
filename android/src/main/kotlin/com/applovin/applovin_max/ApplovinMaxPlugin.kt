@@ -28,7 +28,7 @@ class ApplovinMaxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         applovinMaxManager = ApplovinMaxManager(channel)
         flutterPluginBinding
             .platformViewRegistry
-            .registerViewFactory("/nativeView", NativeViewFactory())
+            .registerViewFactory("/nativeView", NativeViewFactory(channel))
         flutterPluginBinding
             .platformViewRegistry
             .registerViewFactory("/bannerView", BannerViewFactory(channel))

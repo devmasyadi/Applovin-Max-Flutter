@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'applovin_max_method_channel.dart';
+import 'applovin_max_platform_interface.dart';
 
 enum NativeAdType {
   small,
@@ -38,6 +39,14 @@ class ApplovinMaxNativeView extends StatelessWidget {
       viewType: '/nativeView',
       key: UniqueKey(),
       creationParamsCodec: const StandardMessageCodec(),
+      onPlatformViewCreated: (int? i){
+         if (appLovinListener != null) {
+          const MethodChannel channel = MethodChannel('applovin_max');
+          channel.setMethodCallHandler((MethodCall call) async =>
+              ApplovinMaxPlatform.instance
+                  .handleMethod(call, appLovinListener!));
+        }
+      },
     );
     return SizedBox(
       width: sizesNum[size]?.width,

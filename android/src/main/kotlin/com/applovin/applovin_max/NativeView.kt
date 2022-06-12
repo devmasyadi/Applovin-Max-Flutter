@@ -10,9 +10,10 @@ import com.applovin.mediation.MaxError
 import com.applovin.mediation.nativeAds.MaxNativeAdListener
 import com.applovin.mediation.nativeAds.MaxNativeAdLoader
 import com.applovin.mediation.nativeAds.MaxNativeAdView
+import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
-class NativeView(private val context: Context?, private val creationParams: Map<String?, Any?>?) :
+class NativeView(private val context: Context?, private val methodChannel: MethodChannel, private val creationParams: Map<String?, Any?>?) :
     PlatformView {
 
     private var nativeAdLoader: MaxNativeAdLoader =
@@ -47,11 +48,21 @@ class NativeView(private val context: Context?, private val creationParams: Map<
                     TAG,
                     "onNativeAdLoaded: ${ad.toString()} nativeAdContainer: $nativeAdContainer"
                 )
+                Utils.invokeOnAdEvent(
+                    methodChannel,
+                    "onNativeAdLoaded",
+                    hashMapOf("nativeAdContainer" to nativeAdContainer.toString())
+                )
             }
 
             override fun onNativeAdLoadFailed(adUnitId: String, error: MaxError) {
                 // We recommend retrying with exponentially higher delays up to a maximum delay
                 Log.e(TAG, "onNativeAdLoadFailed, adUnit: $adUnitId, error: $error")
+                Utils.invokeOnAdEvent(
+                    methodChannel,
+                    "onAdLoadFailed",
+                    hashMapOf("adUnitId" to adUnitId.toString(), "error" to error.toString())
+                )
             }
 
             override fun onNativeAdClicked(ad: MaxAd) {

@@ -1,3 +1,4 @@
+import 'package:flutter/src/services/message_codec.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:applovin_max/applovin_max.dart';
 import 'package:applovin_max/applovin_max_platform_interface.dart';
@@ -54,6 +55,11 @@ class MockApplovinMaxPlatform
 
   @override
   Future<void> showRewards() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> handleMethod(MethodCall call, AppLovinListener listener) {
     throw UnimplementedError();
   }
 }
