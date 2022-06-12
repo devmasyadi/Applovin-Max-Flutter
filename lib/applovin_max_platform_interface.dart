@@ -37,7 +37,7 @@ abstract class ApplovinMaxPlatform extends PlatformInterface {
     throw UnimplementedError('setAdUnit() has not been implemented.');
   }
 
-  Future<void> createInterstitial(AppLovinListener? appLovinListener) async {
+  Future<void> createInterstitial({AppLovinListener? appLovinListener}) async {
     throw UnimplementedError('createInterstitial() has not been implemented.');
   }
 
@@ -45,7 +45,7 @@ abstract class ApplovinMaxPlatform extends PlatformInterface {
     throw UnimplementedError('showInterstitial() has not been implemented.');
   }
 
-  Future<void> createRewards(AppLovinListener? appLovinListener) async {
+  Future<void> createRewards({AppLovinListener? appLovinListener}) async {
     throw UnimplementedError('createRewards() has not been implemented.');
   }
 

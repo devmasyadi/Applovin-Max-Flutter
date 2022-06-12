@@ -70,7 +70,7 @@ class MethodChannelApplovinMax extends ApplovinMaxPlatform {
   }
 
   @override
-  Future<void> createInterstitial(AppLovinListener? appLovinListener) async {
+  Future<void> createInterstitial({AppLovinListener? appLovinListener}) async {
     if (appLovinListener != null) {
       methodChannel.setMethodCallHandler(
           (MethodCall call) => handleMethod(call, appLovinListener));
@@ -84,7 +84,7 @@ class MethodChannelApplovinMax extends ApplovinMaxPlatform {
   }
 
   @override
-  Future<void> createRewards(AppLovinListener? appLovinListener) async {
+  Future<void> createRewards({AppLovinListener? appLovinListener}) async {
     if (appLovinListener != null) {
       methodChannel.setMethodCallHandler(
           (MethodCall call) => handleMethod(call, appLovinListener));

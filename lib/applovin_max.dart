@@ -21,7 +21,7 @@ class ApplovinMax {
   }
 
   Future<void> createInterstitial({AppLovinListener? appLovinListener}) async {
-    return ApplovinMaxPlatform.instance.createInterstitial(appLovinListener);
+    return ApplovinMaxPlatform.instance.createInterstitial(appLovinListener: appLovinListener);
   }
 
   Future<void> showInterstitial() async {
@@ -29,7 +29,7 @@ class ApplovinMax {
   }
 
   Future<void> createRewards({AppLovinListener? appLovinListener}) async {
-    return ApplovinMaxPlatform.instance.createRewards(appLovinListener);
+    return ApplovinMaxPlatform.instance.createRewards(appLovinListener: appLovinListener);
   }
 
   Future<void> showRewards() async {

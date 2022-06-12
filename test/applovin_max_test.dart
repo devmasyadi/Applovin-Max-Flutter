@@ -34,12 +34,12 @@ class MockApplovinMaxPlatform
   }
 
   @override
-  Future<void> createInterstitial(AppLovinListener? appLovinListener) {
+  Future<void> createInterstitial({AppLovinListener? appLovinListener}) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> createRewards(AppLovinListener? appLovinListener) {
+  Future<void> createRewards({AppLovinListener? appLovinListener}) {
     throw UnimplementedError();
   }
 
