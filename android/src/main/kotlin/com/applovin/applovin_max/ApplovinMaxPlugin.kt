@@ -1,8 +1,6 @@
 package com.applovin.applovin_max
 
-import android.util.Log
 import androidx.annotation.NonNull
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -39,27 +37,15 @@ class ApplovinMaxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            "setAdUnit" -> {
-                val bannerId = call.argument<String>("bannerId")
-                val interstitialId = call.argument<String>("interstitialId")
-                val nativeId = call.argument<String>("nativeId")
-                val rewardsAdsId = call.argument<String>("rewardsAdsId")
-                setAdUnit(bannerId, interstitialId, nativeId, rewardsAdsId)
-                Utils.invokeOnAdEvent(
-                    channel,
-                    "setAdUnit",
-                    hashMapOf("configAdsApplovin" to ConfigAdsApplovin.toString())
-                )
-            }
-            "initSdk" -> {
-                applovinMaxManager.init()
-            }
-            "showInterstitial" -> {
-                applovinMaxManager.showInterstitial()
-            }
-            else -> {
+            "initSdk" -> applovinMaxManager.init()
+            "setAdUnit" -> setAdUnit(call)
+            "createInterstitial" -> applovinMaxManager.createInterstitialAd()
+            "showInterstitial" -> applovinMaxManager.showInterstitial()
+            "createRewards" -> applovinMaxManager.createRewardedAd()
+            "showRewards" -> applovinMaxManager.showRewards()
+            else ->
                 result.notImplemented()
-            }
+
         }
     }
 
@@ -84,21 +70,18 @@ class ApplovinMaxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     private fun setAdUnit(
-        bannerId: String?,
-        interstitialId: String?,
-        nativeId: String?,
-        rewardsAdsId: String?
+        call: MethodCall
     ) {
-        bannerId?.let {
+        call.argument<String>("bannerId")?.let {
             ConfigAdsApplovin.bannerId = it
         }
-        interstitialId?.let {
+        call.argument<String>("interstitialId")?.let {
             ConfigAdsApplovin.interstitialId = it
         }
-        nativeId?.let {
+        call.argument<String>("nativeId")?.let {
             ConfigAdsApplovin.nativeId = it
         }
-        rewardsAdsId?.let {
+        call.argument<String>("rewardsAdsId")?.let {
             ConfigAdsApplovin.rewardsAdsId = it
         }
     }

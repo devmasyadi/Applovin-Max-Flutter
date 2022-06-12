@@ -3,10 +3,10 @@ package com.applovin.applovin_max
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
-import com.applovin.mediation.MaxAd
-import com.applovin.mediation.MaxAdListener
-import com.applovin.mediation.MaxError
+import android.util.Log
+import com.applovin.mediation.*
 import com.applovin.mediation.ads.MaxInterstitialAd
+import com.applovin.mediation.ads.MaxRewardedAd
 import com.applovin.sdk.AppLovinMediationProvider
 import com.applovin.sdk.AppLovinSdk
 import io.flutter.plugin.common.MethodChannel
@@ -16,10 +16,6 @@ import kotlin.math.pow
 class ApplovinMaxManager(
     private val methodeChannel: MethodChannel
 ) {
-
-    companion object {
-        const val TAG = "ApplovinMaxManager"
-    }
 
     private lateinit var activity: Activity
 
@@ -32,7 +28,6 @@ class ApplovinMaxManager(
         AppLovinSdk.getInstance(activity).initializeSdk {
             // AppLovin SDK is initialized, start loading ads
             invokeOnAdEvent("onAdInitialized", hashMapOf("isInitialized" to true))
-            createInterstitialAd()
         }
     }
 
@@ -44,7 +39,7 @@ class ApplovinMaxManager(
     private lateinit var interstitialAd: MaxInterstitialAd
     private var retryAttempt = 0.0
 
-    private fun createInterstitialAd() {
+    fun createInterstitialAd() {
         interstitialAd = MaxInterstitialAd(ConfigAdsApplovin.interstitialId, activity)
         interstitialAd.setListener(interstitialListener)
 
@@ -56,7 +51,7 @@ class ApplovinMaxManager(
         if (interstitialAd.isReady) {
             interstitialAd.showAd()
         } else
-            createInterstitialAd()
+            interstitialAd.loadAd()
     }
 
     private val interstitialListener = object : MaxAdListener {
@@ -103,4 +98,80 @@ class ApplovinMaxManager(
         }
 
     }
+
+    private lateinit var rewardedAd: MaxRewardedAd
+    private var retryAttemptRwd = 0.0
+
+    fun createRewardedAd() {
+        rewardedAd = MaxRewardedAd.getInstance(ConfigAdsApplovin.rewardsAdsId, activity)
+        rewardedAd.setListener(maxRewardedAdListener)
+
+        rewardedAd.loadAd()
+    }
+
+    fun showRewards() {
+        if (rewardedAd.isReady) {
+            rewardedAd.showAd();
+        } else
+            rewardedAd.loadAd()
+    }
+
+    private val maxRewardedAdListener = object : MaxRewardedAdListener {
+        // MAX Ad Listener
+        override fun onAdLoaded(maxAd: MaxAd) {
+            // Rewarded ad is ready to be shown. rewardedAd.isReady() will now return 'true'
+
+            // Reset retry attempt
+            retryAttemptRwd = 0.0
+            Utils.invokeOnAdEvent(
+                methodeChannel,
+                "onAdLoaded",
+                hashMapOf("maxAd" to maxAd.toString())
+            )
+        }
+
+        override fun onAdLoadFailed(adUnitId: String?, error: MaxError?) {
+            // Rewarded ad failed to load
+            // We recommend retrying with exponentially higher delays up to a maximum delay (in this case 64 seconds)
+
+            retryAttemptRwd++
+            val delayMillis =
+                TimeUnit.SECONDS.toMillis(2.0.pow(6.0.coerceAtMost(retryAttemptRwd)).toLong())
+
+            Handler().postDelayed({ rewardedAd.loadAd() }, delayMillis)
+            invokeOnAdEvent(
+                "onAdLoadFailed",
+                hashMapOf("adUnitId" to adUnitId.toString(), "error" to error.toString())
+            )
+        }
+
+        override fun onAdDisplayFailed(ad: MaxAd?, error: MaxError?) {
+            // Rewarded ad failed to display. We recommend loading the next ad
+            rewardedAd.loadAd()
+        }
+
+        override fun onAdDisplayed(maxAd: MaxAd) {}
+
+        override fun onAdClicked(maxAd: MaxAd) {}
+
+        override fun onAdHidden(maxAd: MaxAd) {
+            // rewarded ad is hidden. Pre-load the next ad
+            rewardedAd.loadAd()
+        }
+
+        override fun onRewardedVideoStarted(maxAd: MaxAd) {}
+
+        override fun onRewardedVideoCompleted(maxAd: MaxAd) {}
+
+        override fun onUserRewarded(maxAd: MaxAd, maxReward: MaxReward) {
+            // Rewarded ad was displayed and user should receive the reward
+            Utils.invokeOnAdEvent(
+                methodeChannel,
+                "onUserRewarded",
+                hashMapOf("maxAd" to maxAd.toString(), "maxReward" to maxReward.toString())
+            )
+        }
+    }
+
+
 }

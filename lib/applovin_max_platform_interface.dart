@@ -27,16 +27,28 @@ abstract class ApplovinMaxPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
+  Future<void> initSdk(AppLovinInitListener? appLovinInitListener) async {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
   Future<void> setAdUnit(String? bannerId, String? interstitialId,
       String? nativeId, String? rewardsAdsId) async {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<void> initSdk(AppLovinInitListener? appLovinInitListener) async {
+  Future<void> createInterstitial(AppLovinListener? appLovinListener) async {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<void> showInterstitial(AppLovinListener? appLovinListener) async {
+  Future<void> showInterstitial() async {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<void> createRewards(AppLovinListener? appLovinListener) async {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<void> showRewards() async {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 }

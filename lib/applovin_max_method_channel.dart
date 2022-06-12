@@ -42,20 +42,6 @@ class MethodChannelApplovinMax extends ApplovinMaxPlatform {
   }
 
   @override
-  Future<void> setAdUnit(String? bannerId, String? interstitialId,
-      String? nativeId, String? rewardsAdsId) async {
-    await methodChannel.invokeMethod<void>(
-      'setAdUnit',
-      <String, dynamic>{
-        "bannerId": bannerId,
-        "interstitialId": interstitialId,
-        "nativeId": nativeId,
-        "rewardsAdsId": rewardsAdsId
-      },
-    );
-  }
-
-  @override
   Future<void> initSdk(AppLovinInitListener? appLovinInitListener) async {
     if (appLovinInitListener != null) {
       methodChannel.setMethodCallHandler((MethodCall call) async {
@@ -66,17 +52,45 @@ class MethodChannelApplovinMax extends ApplovinMaxPlatform {
   }
 
   @override
-  Future<void> showInterstitial(AppLovinListener? appLovinListener) async {
+  Future<void> setAdUnit(String? bannerId, String? interstitialId,
+      String? nativeId, String? rewardsAdsId) async {
+    await methodChannel.invokeMethod<void>(
+      'setAdUnit',
+      {
+        "bannerId": bannerId,
+        "interstitialId": interstitialId,
+        "nativeId": nativeId,
+        "rewardsAdsId": rewardsAdsId
+      },
+    );
+  }
+
+  @override
+  Future<void> createInterstitial(AppLovinListener? appLovinListener) async {
     if (appLovinListener != null) {
       methodChannel.setMethodCallHandler(
           (MethodCall call) => handleMethod(call, appLovinListener));
     }
+    await methodChannel.invokeMethod<String>('createInterstitial');
+  }
+
+  @override
+  Future<void> showInterstitial() async {
     await methodChannel.invokeMethod<String>('showInterstitial');
   }
 
-  static Future<void> handleInitListener(
-      MethodCall call, AppLovinInitListener listener) async {
-    listener(call.arguments["isInitialized"]);
+  @override
+  Future<void> createRewards(AppLovinListener? appLovinListener) async {
+    if (appLovinListener != null) {
+      methodChannel.setMethodCallHandler(
+          (MethodCall call) => handleMethod(call, appLovinListener));
+    }
+    await methodChannel.invokeMethod<String>('createRewards');
+  }
+
+  @override
+  Future<void> showRewards() async {
+    await methodChannel.invokeMethod<String>('showRewards');
   }
 
   static Future<void> handleMethod(

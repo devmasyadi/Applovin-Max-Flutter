@@ -1,7 +1,6 @@
 package com.applovin.applovin_max
 
 import android.content.Context
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
@@ -14,7 +13,11 @@ import com.applovin.sdk.AppLovinSdkUtils
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
-class BannerView(private val context: Context?, private val methodeChannel: MethodChannel, creationParams: Map<String?, Any?>?) : PlatformView {
+class BannerView(
+    private val context: Context?,
+    private val methodeChannel: MethodChannel,
+    creationParams: Map<String?, Any?>?
+) : PlatformView {
 
     private var banner: MaxAdView? = null
     private val sizes: HashMap<String, AppLovinAdSize> =
@@ -29,7 +32,11 @@ class BannerView(private val context: Context?, private val methodeChannel: Meth
     private val bannerListener = object : MaxAdViewAdListener {
         // MAX Ad Listener
         override fun onAdLoaded(maxAd: MaxAd) {
-            Utils.invokeOnAdEvent(methodeChannel, "onAdLoaded", hashMapOf("maxAd" to maxAd.toString()))
+            Utils.invokeOnAdEvent(
+                methodeChannel,
+                "onAdLoaded",
+                hashMapOf("maxAd" to maxAd.toString())
+            )
         }
 
         override fun onAdLoadFailed(adUnitId: String?, error: MaxError) {}
@@ -61,7 +68,7 @@ class BannerView(private val context: Context?, private val methodeChannel: Meth
             this.dpToPx(context, size.width), this.dpToPx(context, size.height)
         )
         layout.gravity = Gravity.CENTER
-        banner?.layoutParams =layout
+        banner?.layoutParams = layout
         // Load the ad
         banner?.loadAd()
     }

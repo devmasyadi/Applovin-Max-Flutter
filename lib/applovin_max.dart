@@ -7,6 +7,10 @@ class ApplovinMax {
     return ApplovinMaxPlatform.instance.getPlatformVersion();
   }
 
+  Future<void> initSdk({AppLovinInitListener? appLovinInitListener}) {
+    return ApplovinMaxPlatform.instance.initSdk(appLovinInitListener);
+  }
+
   Future<void> setAdUnit(
       {String? bannerId,
       String? interstitialId,
@@ -16,12 +20,19 @@ class ApplovinMax {
         .setAdUnit(bannerId, interstitialId, nativeId, rewardsAdsId);
   }
 
-  Future<void> initSdk({AppLovinInitListener? appLovinInitListener}) {
-    return ApplovinMaxPlatform.instance.initSdk(appLovinInitListener);
+  Future<void> createInterstitial({AppLovinListener? appLovinListener}) async {
+    return ApplovinMaxPlatform.instance.createInterstitial(appLovinListener);
   }
 
-  Future<void> showInterstitial({AppLovinListener? appLovinListener}) async {
-    ApplovinMaxPlatform.instance.showInterstitial(appLovinListener);
+  Future<void> showInterstitial() async {
+    return ApplovinMaxPlatform.instance.showInterstitial();
   }
 
+  Future<void> createRewards({AppLovinListener? appLovinListener}) async {
+    return ApplovinMaxPlatform.instance.createRewards(appLovinListener);
+  }
+
+  Future<void> showRewards() async {
+    return ApplovinMaxPlatform.instance.showRewards();
+  }
 }
