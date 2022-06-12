@@ -1,4 +1,5 @@
 import 'package:applovin_max/applovin_max_banner_view.dart';
+import 'package:applovin_max/applovin_max_method_channel.dart';
 import 'package:applovin_max/applovin_max_native_view.dart';
 import 'package:flutter/material.dart';
 import 'package:applovin_max/applovin_max.dart';
@@ -25,6 +26,11 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  void _listener(AppLovinAdListener? appLovinAdListener) {
+    // ignore: avoid_print
+    print("appLovinAdListener: $appLovinAdListener");
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,7 +46,8 @@ class _MyAppState extends State<MyApp> {
                   _applovinMaxPlugin.setAdUnit(
                       bannerId: "a9cf30664af0cafd",
                       interstitialId: "37bee3aa561caa00",
-                      nativeId: "117ad74db422cb93");
+                      nativeId: "117ad74db422cb93",
+                      rewardsAdsId: "50abdd7e9a3fcd0a");
                 },
                 child: const Text("SetAdUnit"),
               ),
@@ -58,9 +65,27 @@ class _MyAppState extends State<MyApp> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  _applovinMaxPlugin.createInterstitial(appLovinListener: _listener);
+                },
+                child: const Text("Create Int"),
+              ),
+              ElevatedButton(
+                onPressed: () {
                   _applovinMaxPlugin.showInterstitial();
                 },
                 child: const Text("Show Int"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _applovinMaxPlugin.createRewards(appLovinListener: _listener);
+                },
+                child: const Text("Create Rwd"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _applovinMaxPlugin.showRewards();
+                },
+                child: const Text("Show Rwd"),
               ),
               ElevatedButton(
                 onPressed: () {
